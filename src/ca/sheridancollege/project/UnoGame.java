@@ -28,7 +28,7 @@ public class UnoGame extends Game{
     // Give each player 7 cards
     for (Player player : getPlayers()) {
         for (int i = 0; i < 7; i++) {
-            player.drawCard(deck);  // This works for both UnoPlayer and SystemUnoPlayer
+            player.drawCard(deck);  // this works for both UnoPlayer and SystemUnoPlayer
         }
     }
 
@@ -46,11 +46,11 @@ public class UnoGame extends Game{
         System.out.println("Top Card: " + topCard);
 
         if (currentPlayer instanceof UnoPlayer) {
-            // Human player's turn
+            // human players turn
             UnoPlayer unoPlayer = (UnoPlayer) currentPlayer;
             unoPlayer.play(deck, topCard);  // Ask human player to play a card
         } else if (currentPlayer instanceof SystemUnoPlayer) {
-            // AI player's turn
+            // system players turn
             SystemUnoPlayer systemPlayer = (SystemUnoPlayer) currentPlayer;
             systemPlayer.play(deck, topCard);  // System plays automatically
         }

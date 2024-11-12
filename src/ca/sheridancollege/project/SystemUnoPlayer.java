@@ -17,10 +17,10 @@ public class SystemUnoPlayer extends Player {
 
     @Override
     public void play(UnoDeck deck, UnoCard topCard) {
-        // AI selects a card to play automatically based on the top card
+        // system selects a card to play automatically based on the top card
         UnoCard selectedCard = null;
 
-        // Choose a card to play from the player's hand (just selecting the first valid card)
+        // choose a card to play from the players hand (just selecting the first valid card)
         for (UnoCard card : getPlayerHand()) {
             if (isValidCard(card, topCard)) {
                 selectedCard = card;
@@ -28,7 +28,7 @@ public class SystemUnoPlayer extends Player {
             }
         }
 
-        // If no valid card, draw a card
+        // If no valid card then draw a card
         if (selectedCard == null) {
             drawCard(deck);
             System.out.println(getName() + " draws a card.");
@@ -39,7 +39,7 @@ public class SystemUnoPlayer extends Player {
     }
 
     private boolean isValidCard(UnoCard card, UnoCard topCard) {
-        // Cards are valid if their color or type matches the top card's color or type
+        // Cards are valid if their color or type matches the top cards color or type
         return card.getColour().equals(topCard.getColour()) ||
                card.getType().equals(topCard.getType()) ||
                (card.getType() == UnoCard.Type.NUMBER && card.getValue() == topCard.getValue());

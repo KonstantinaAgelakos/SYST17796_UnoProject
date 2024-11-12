@@ -56,7 +56,7 @@ public abstract class Player {
     
     // added nov 6
     public void drawCard(UnoDeck deck){
-        if(deck.getCards().size()>0){
+        if(!deck.getCards().isEmpty()){
             UnoCard drawnCard = (UnoCard)deck.getCards().remove(deck.getCards().size()-1);
             playerHand.add(drawnCard);
             System.out.println(getName() + " draws a card: " + drawnCard);
