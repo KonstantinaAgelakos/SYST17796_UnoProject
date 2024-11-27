@@ -19,6 +19,7 @@ public class Main {
         // create players
         UnoPlayer user = new UnoPlayer("Konstantina"); // user player
         SystemUnoPlayer systemPlayer = new SystemUnoPlayer("Alizeh") {}; // system player
+
         
         // add players to game
         game.setPlayers(new ArrayList<>(Arrays.asList(user, systemPlayer)));

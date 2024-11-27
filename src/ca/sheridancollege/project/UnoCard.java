@@ -5,50 +5,63 @@
 package ca.sheridancollege.project;
 
 /**
- *
+ * Represents a single UNO card with a color and type.
+ * Can represent number cards or special cards like Skip, Reverse, Draw Two, and Wild.
+ * 
  * @author Konstantina
  */
-public class UnoCard extends Card{
-    
-    public enum Colour {RED, YELLOW, GREEN, BLUE, WILD }
+public class UnoCard extends Card {
+
+    public enum Colour { RED, YELLOW, GREEN, BLUE, WILD }
     public enum Type { NUMBER, SKIP, REVERSE, DRAW_TWO, WILD, WILD_DRAW_FOUR }
     public enum Value {ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE}
-    
-    private final Colour colour;
+
+    private Colour colour;
     private final Type type;
-    private final Value value;
-    
-    // constructor for number cards
-    public UnoCard(Colour colour, Value value){
+    private final Integer value; // Integer for number cards, null for special cards
+
+    public UnoCard(Colour colour, Integer value) {
         this.colour = colour;
         this.type = Type.NUMBER;
         this.value = value;
     }
-    
+
     // constructor for special cards
     public UnoCard(Colour colour, Type type) {
         this.colour = colour;
         this.type = type;
         this.value = null;
     }
-    
-    public Colour getColour(){
+
+    public Colour getColour() {
         return colour;
     }
-    public Type getType(){
+
+    public Type getType() {
         return type;
     }
-    public Value getValue(){
+
+    public Integer getValue() {
         return value;
+    }
+
+    public void setColour(Colour colour) {
+        if (type == Type.WILD || type == Type.WILD_DRAW_FOUR) {
+            this.colour = colour;
+        }
+    }
+
+    /**
+     * Checks if the card is a wild card.
+     * 
+     * @return true if the card is a wild card, false otherwise
+     */
+    public boolean isWild() {
+        return type == Type.WILD || type == Type.WILD_DRAW_FOUR;
     }
 
     @Override
     public String toString() {
-        if (type == Type.NUMBER){
-            return colour+" "+value; // will display num cards as colour and val
-        } else{
-            return colour+" "+type; // will display special cards as colour and type
-        }
+        return type == Type.NUMBER ? colour + " " + value : colour + " " + type;
     }
-    
 }

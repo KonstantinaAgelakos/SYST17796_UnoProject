@@ -7,67 +7,70 @@ package ca.sheridancollege.project;
 import java.util.Scanner;
 
 /**
- *
+ * The class that models the UNO game.
+ * Extends the Game class to provide specific functionality for UNO.
+ * 
  * @author Konstantina
  */
-public class UnoGame extends Game{
-    private final UnoDeck deck;
-    private UnoCard topCard;
-    private int currentPI;
+public class UnoGame extends Game {
+    private final UnoDeck deck; // The deck of UNO cards
+    private UnoCard topCard;   // The top card on the discard pile
+    private int currentPI;     // The index of the current player
 
     public UnoGame(String name) {
         super(name);
-        deck = new UnoDeck(180); // initialize deck
-        currentPI = 0; // start w/ first player
+        deck = new UnoDeck(180); // Initialize the deck with 180 cards
+        currentPI = 0; // Start with the first player
     }
-    
-    
 
     @Override
     public void play() {
-    // Give each player 7 cards
-    for (Player player : getPlayers()) {
-        for (int i = 0; i < 7; i++) {
-            player.drawCard(deck);  // this works for both UnoPlayer and SystemUnoPlayer
-        }
-    }
-
-    // Start the game with the first card at the top
-    topCard = (UnoCard) deck.getCards().remove(deck.getCards().size() - 1);
-    System.out.println("The starting card is: " + topCard);
-
-    // Game loop
-    boolean gameWon = false;
-    Scanner scanner = new Scanner(System.in);
-
-    while (!gameWon) {
-        Player currentPlayer = getPlayers().get(currentPI);
-        System.out.println(currentPlayer.getName() + "'s turn");
-        System.out.println("Top Card: " + topCard);
-
-        if (currentPlayer instanceof UnoPlayer) {
-            // human players turn
-            UnoPlayer unoPlayer = (UnoPlayer) currentPlayer;
-            unoPlayer.play(deck, topCard);  // Ask human player to play a card
-        } else if (currentPlayer instanceof SystemUnoPlayer) {
-            // system players turn
-            SystemUnoPlayer systemPlayer = (SystemUnoPlayer) currentPlayer;
-            systemPlayer.play(deck, topCard);  // System plays automatically
+        // Distribute 7 cards to each player at the start of the game
+        for (Player player : getPlayers()) {
+            for (int i = 0; i < 7; i++) {
+                player.drawCard(deck);
+            }
         }
 
-        // Check for winner and exit loop if there's a winner
-        if (currentPlayer.getPlayerHand().isEmpty()) {
-            gameWon = true;  // Game ends when player has no more cards
-            System.out.println(currentPlayer.getName() + " wins!");
+        // Start the game by placing the first card on the discard pile
+        topCard = (UnoCard) deck.getCards().remove(deck.getCards().size() - 1);
+        System.out.println("The starting card is: " + topCard);
+
+        // Main game loop
+        boolean gameWon = false;
+
+        while (!gameWon) {
+            Player currentPlayer = getPlayers().get(currentPI); // Get the current player
+            System.out.println("\n" + currentPlayer.getName() + "'s turn");
+            System.out.println("Top Card: " + topCard);
+
+            // The player takes their turn
+            currentPlayer.play(deck, topCard);
+
+            // Update the top card if a card is played
+            UnoCard playedCard = currentPlayer.getLastPlayedCard();
+            if (playedCard != null) {
+                topCard = playedCard;
+                System.out.println("Top card updated to: " + topCard);
+            } else {
+                System.out.println(currentPlayer.getName() + " did not play a card.");
+            }
+
+            // Check if the current player has won the game
+            if (currentPlayer.getPlayerHand().isEmpty()) {
+                gameWon = true;
+                System.out.println(currentPlayer.getName() + " wins!");
+            }
+
+            // Check if the deck is empty
+            if (deck.getCards().isEmpty()) {
+                System.out.println("The deck is empty! The game ends in a draw.");
+                break;
+            }
+
+            // Move to the next player
+            currentPI = (currentPI + 1) % getPlayers().size();
         }
-
-        // Change players
-        currentPI = (currentPI + 1) % getPlayers().size();
-    }
-
-        // call declareWinner method when a player finishes their cards
-        declareWinner();
-        
     }
 
     @Override

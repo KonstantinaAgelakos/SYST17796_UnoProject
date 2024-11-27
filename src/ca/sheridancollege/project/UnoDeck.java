@@ -7,10 +7,12 @@ package ca.sheridancollege.project;
 import java.util.ArrayList;
 
 /**
- *
+ * Represents a deck of UNO cards.
+ * Initializes the deck with all standard UNO cards, including number and special cards.
+ * 
  * @author Konstantina
  */
-public class UnoDeck extends GroupOfCards{
+public class UnoDeck extends GroupOfCards {
     
     public UnoDeck(int size) {
         super(size);
@@ -18,23 +20,29 @@ public class UnoDeck extends GroupOfCards{
         shuffle();
     }
     
-    private void initializeDeck(){
-        for(UnoCard.Colour colour : UnoCard.Colour.values()){
-            if (colour != UnoCard.Colour.WILD){
-                // adding num cards here
-                for (UnoCard.Value value : UnoCard.Value.values()){
-                    cards.add(new UnoCard(colour, value));
-                    if (value != UnoCard.Value.ONE){
-                        cards.add(new UnoCard(colour, value));
+    /**
+     * Initializes the UNO deck with all number cards, special cards, and wild cards.
+     */
+    private void initializeDeck() {
+        for (UnoCard.Colour colour : UnoCard.Colour.values()) {
+            if (colour != UnoCard.Colour.WILD) {
+                // Adding number cards (using the Value enum for numbers)
+                for (UnoCard.Value value : UnoCard.Value.values()) {
+                    cards.add(new UnoCard(colour, value.ordinal())); // Added correct initialization
+                    if (value.ordinal() != 0) { // Add a second copy for numbers 1 to 9
+                        cards.add(new UnoCard(colour, value.ordinal()));
                     }
                 }
-                // adding the special cards
+                // Adding the special cards (Skip, Reverse, Draw Two)
+                cards.add(new UnoCard(colour, UnoCard.Type.SKIP));
                 cards.add(new UnoCard(colour, UnoCard.Type.SKIP));
                 cards.add(new UnoCard(colour, UnoCard.Type.REVERSE));
+                cards.add(new UnoCard(colour, UnoCard.Type.REVERSE));
+                cards.add(new UnoCard(colour, UnoCard.Type.DRAW_TWO));
                 cards.add(new UnoCard(colour, UnoCard.Type.DRAW_TWO));
             }
         }
-        // adding the wild and wild_draw_four
+        // Adding the wild cards (Wild and Wild Draw Four)
         for (int i = 0; i < 4; i++) {
             cards.add(new UnoCard(UnoCard.Colour.WILD, UnoCard.Type.WILD));
             cards.add(new UnoCard(UnoCard.Colour.WILD, UnoCard.Type.WILD_DRAW_FOUR));
